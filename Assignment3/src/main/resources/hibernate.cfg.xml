@@ -7,7 +7,7 @@
     <property name="hibernate.default_schema">MYDB</property>
     <property name="dialect">org.hibernate.dialect.H2Dialect</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="it/unitn/lsde/ass3/assignment3/model/Tabperson.hbm.xml"/>
-    <mapping resource="it/unitn/lsde/ass3/assignment3/model/Tabhealthprofile.hbm.xml"/>
+    <mapping resource="it/unitn/lsde/ass3/model/Tabperson.hbm.xml"/>
+    <mapping resource="it/unitn/lsde/ass3/model/Tabhealthprofile.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

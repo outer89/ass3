@@ -5,7 +5,7 @@
  */
 package it.unitn.lsde.ass3.publisher;
 
-import it.unitn.lsde.ass3.assignment3.ServiceImpl;
+import it.unitn.lsde.ass3.service.SoapServicesImpl;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.xml.ws.Endpoint;
@@ -24,7 +24,7 @@ public class Publisher {
             String port = "5914";
             String url = "http://" + localhost + ":" + port + "/";
             System.out.println(url);
-            Endpoint e = Endpoint.publish(url + "ws/soap", new ServiceImpl() );
+            Endpoint e = Endpoint.publish(url + "ws/soap", new SoapServicesImpl() );
             
         } catch (UnknownHostException ex) {
             System.out.println("errore");

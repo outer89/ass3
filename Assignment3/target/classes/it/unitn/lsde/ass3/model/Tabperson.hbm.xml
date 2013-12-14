@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-dic-2013 18.21.32 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <filter-def name="datefilter">
+        <filter-param name="idtemp" type="java.lang.Integer"/>
+    </filter-def>
+  <class catalog="TEST" name="it.unitn.lsde.ass3.model.Person" table="TABPERSON">
+    <id name="idperson" type="java.lang.Integer">
+      <column name="IDPERSON"/>
+      <generator class="identity"/>
+    </id>
+    <property name="name" type="string">
+      <column length="45" name="NAME" not-null="true"/>
+    </property>
+    <property name="surname" type="string">
+      <column length="45" name="SURNAME" not-null="true"/>
+    </property>
+    <property name="birthday" type="timestamp">
+      <column length="23" name="BIRTHDAY" not-null="true"/>
+    </property>
+    <set cascade="save-update" fetch="select" inverse="true" lazy="false" name="tabhealthprofiles" order-by="date" table="TABHEALTHPROFILE">
+      <key>
+        <column name="IDPERSON" not-null="true"/>
+      </key>
+      <one-to-many class="it.unitn.lsde.ass3.model.Healthprofile"/>
+     
+      <filter condition=" IDTABHEALTHPROFILE  =  
+                            (select max(hp.idtabhealthprofile) from mydb.tabhealthprofile hp where hp.date =
+                                (select max(hp2.date) from mydb.tabhealthprofile hp2 where hp2.idperson=:idtemp)
+                            )" name="datefilter"/>
+    </set>
+  </class>
+</hibernate-mapping>

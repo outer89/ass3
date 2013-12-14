@@ -1,26 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unitn.lsde.ass3.dao;
 
-import it.unitn.lsde.ass3.assignment3.model.Healthprofile;
-import it.unitn.lsde.ass3.assignment3.model.Person;
+import it.unitn.lsde.ass3.model.Healthprofile;
+import it.unitn.lsde.ass3.model.Person;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Lorenzo
- */
 public class HpDao extends DaoBase {
 
     /**
-     *
+     * create a new healthprofile for person ID. If no hp id is specified,
+     * a new healthprofile will be created. If a hp id is specified and the 
+     * id is already present the function will return -1. If the hp id is
+     * specified and no healthprofile is present with that id, it will add a
+     * new healthprofile to person id
      * @param id
      * @param hp
      * @return id of hp else -1
@@ -33,9 +29,9 @@ public class HpDao extends DaoBase {
             tx = s.beginTransaction();
             if (hp.getIdtabhealthprofile() == null) {
                 save = true;
-            } else if ( gethp(hp.getIdtabhealthprofile()) != null) {
-                //there exist already an HP with this profile
-                //return -1;
+            } else if (gethp(hp.getIdtabhealthprofile()) != null) {
+                //do nothing, I will not update the current heathprofile
+                //use updatePersonHealthProfile instead
             } else {
                 save = true;
             }
@@ -62,6 +58,13 @@ public class HpDao extends DaoBase {
 
     }
 
+    /**
+     * this function get a healthprofile. Its used only for business logic
+     * purposes.
+     *
+     * @param id
+     * @return
+     */
     private Healthprofile gethp(int id) {
         Session s = getSession();
         Transaction tx = null;
@@ -80,9 +83,12 @@ public class HpDao extends DaoBase {
     }
 
     /**
-     *
-     * @param id
-     * @param hp
+     * This function update an healthprofile for person ID. If the hp ID is 
+     * specified, if it exists the healthprofile will be updated, otherwise 
+     * a new healthprofile will be created. If the hp ID is not specified, 
+     * a new healthprofile will be created.
+     * @param id person ID 
+     * @param hp healthp profile to be updated/createed
      * @return id of hp or -1 in case of error, -2 if person does not exist
      */
     public int updateHp(int id, Healthprofile hp) {
@@ -94,16 +100,20 @@ public class HpDao extends DaoBase {
             if (p == null) {
                 return -2;
             }
-            if ( gethp(hp.getIdtabhealthprofile()) == null) {
-                System.out.println("cazziemazzi");
-                hp.setIdtabhealthprofile(null);
+            if(hp==null){
+                System.out.println("lol");
+            }
+            if (hp.getIdtabhealthprofile() != null) {
+                if (gethp(hp.getIdtabhealthprofile()) == null) {
+                    hp.setIdtabhealthprofile(null);
+                }
             }
             hp.setTabperson(p);
             s.saveOrUpdate(hp);
             s.flush();
             tx.commit();
             return hp.getIdtabhealthprofile();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             e.printStackTrace();
             tx.rollback();
             return -1;
@@ -113,6 +123,11 @@ public class HpDao extends DaoBase {
 
     }
 
+    /**
+     *
+     * @param idPerson ID of the person
+     * @return the healthprofile history for the corrisponding ID
+     */
     public List getHistory(int idPerson) {
         Session s = getSession();
         Transaction tx = null;
@@ -123,7 +138,7 @@ public class HpDao extends DaoBase {
             p.setIdperson(idPerson);
             c.add(Restrictions.eq("tabperson", p));
             return c.list();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             e.printStackTrace();
             tx.rollback();
             return null;
