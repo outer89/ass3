@@ -19,7 +19,7 @@
     <property name="birthday" type="timestamp">
       <column length="23" name="BIRTHDAY" not-null="true"/>
     </property>
-    <set cascade="save-update" fetch="select" inverse="true" lazy="false" name="tabhealthprofiles" order-by="date" table="TABHEALTHPROFILE">
+    <set cascade="all" fetch="select" inverse="true" lazy="false" name="tabhealthprofiles" order-by="date" table="TABHEALTHPROFILE">
       <key>
         <column name="IDPERSON" not-null="true"/>
       </key>

@@ -89,16 +89,18 @@ public class PersonDao extends DaoBase {
         Transaction tx = null;
         try {
             tx = s.beginTransaction();
-            Person p = getPerson(id);
+            Person p = getPersonNofilter(id);
             if (p == null) {
                 return -1;
             }
+            System.out.println(p.getTabhealthprofiles().size());
             s.delete(p);
             s.flush();
             tx.commit();
             return 0;
         } catch (HibernateException e) {
             tx.rollback();
+            e.printStackTrace();
             return -2;
         } finally {
             s.close();
@@ -122,15 +124,16 @@ public class PersonDao extends DaoBase {
                 if (p.getTabhealthprofiles().size() == 1) {
                     Healthprofile hp = (Healthprofile) p.getTabhealthprofiles().toArray()[0];
                     hp.setTabperson(p);
+                    hp.setIdtabhealthprofile(null);
                     p.getTabhealthprofiles().clear();
                     p.getTabhealthprofiles().add(hp);
-
+                }else{
+                    p.getTabhealthprofiles().clear();
                 }
             }
             s.save(p);
             s.flush();
             t.commit();
-            System.out.println(p.getIdperson());
             return p.getIdperson();
         } catch (HibernateException e) {
             e.printStackTrace();

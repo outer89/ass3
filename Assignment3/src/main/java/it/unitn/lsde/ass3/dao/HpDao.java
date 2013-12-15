@@ -100,9 +100,6 @@ public class HpDao extends DaoBase {
             if (p == null) {
                 return -2;
             }
-            if(hp==null){
-                System.out.println("lol");
-            }
             if (hp.getIdtabhealthprofile() != null) {
                 if (gethp(hp.getIdtabhealthprofile()) == null) {
                     hp.setIdtabhealthprofile(null);

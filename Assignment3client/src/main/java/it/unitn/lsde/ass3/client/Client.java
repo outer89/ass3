@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package it.unitn.lsde.ass3.client;
 
 import it.unitn.lsde.ass3.service.Exception_Exception;
@@ -45,16 +41,15 @@ public class Client implements ServiceTest {
 
     public void executeTest() {
         int testIdPerson = 1;
-        
-        /*  int i = createPerson();
-         readPerson(testIdPerson);
-         if (i > 0) {
-         deletePerson(i);
-         }
-         updatePerson(testIdPerson);
-         getHistory(testIdPerson);*/
-         addHealthprofile(1);
-         updateHealthprofile(1);
+        int i = createPerson();
+        readPerson(testIdPerson);
+        if (i > 0) {
+            deletePerson(i);
+        }
+        updatePerson(testIdPerson);
+        getHistory(testIdPerson);
+        addHealthprofile(1);
+        updateHealthprofile(1);
 
     }
 
